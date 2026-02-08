@@ -15,21 +15,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Newman
-        run: npm install -g newman newman-reporter-html
+        run: npm install -g newman newman-reporter-allure
 
       - name: Run API Tests
         run: |
           newman run ./postman/collection.json \
             -e ./postman/environment.json \
             -d ./postman/test_data.csv \
-            -r cli,html \
-            --reporter-html-export ./report.html
+            -r cli,allure \
+            --reporter-allure-export ./allure-results
         env:
           API_KEY: ${{ secrets.TMDB_API_KEY }}
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
         if: always()
         with:
-          name: api-test-report
-          path: report.html
+          allure_results: allure-results
+
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history

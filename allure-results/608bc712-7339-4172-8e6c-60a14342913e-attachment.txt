@@ -1,0 +1,22 @@
+let jsonData = pm.response.json();
+
+// 상태코드 체크
+pm.test("Status is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+// movie_id 일치 확인 (CSV 데이터 사용)
+pm.test("Movie ID matches", function () {
+    let expectedId = parseInt(pm.iterationData.get("movie_id"));
+    pm.expect(jsonData.id).to.eql(expectedId);
+});
+
+// title 존재 여부 확인
+pm.test("Title field exists", function () {
+    pm.expect(jsonData).to.have.property("title");
+});
+
+// 응답 시간 체크
+pm.test("Response time < 1000ms", function () {
+    pm.expect(pm.response.responseTime).to.be.below(1000);
+});
