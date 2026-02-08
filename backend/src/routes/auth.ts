@@ -7,7 +7,7 @@ import db from '../db';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
-const JWT_SECRET: string = process.env.JWT_SECRET || 'secret';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'secret';  
 
 // Validation schemas
 const registerSchema = z.object({
@@ -47,9 +47,9 @@ router.post('/register', async (req, res) => {
 
     // Generate token
     const token = jwt.sign(
-      { id, email },
-      JWT_SECRET,
-      { expiresIn: '7d' }
+    { id, email },
+    JWT_SECRET,
+    { expiresIn: '7d' }
     );
 
     res.status(201).json({
