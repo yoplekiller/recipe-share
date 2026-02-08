@@ -1,0 +1,16 @@
+{
+  "id": "movie-api-env",
+  "name": "TMDB API Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "https://api.themoviedb.org/3",
+      "enabled": true
+    },
+    {
+      "key": "api_key",
+      "value": "3299b50a4dced54e359aa9836423483a",
+      "enabled": true
+    }
+  ]
+}

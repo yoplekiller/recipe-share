@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "a5c44753-59ac-42d3-9236-782691e8a1b6",
+		"name": "MOVIE_API_TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "movie_id_test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"// 상태코드 체크",
+							"pm.test(\"Status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// movie_id 일치 확인 (CSV 데이터 사용)",
+							"pm.test(\"Movie ID matches\", function () {",
+							"    let expectedId = parseInt(pm.iterationData.get(\"movie_id\"));",
+							"    pm.expect(jsonData.id).to.eql(expectedId);",
+							"});",
+							"",
+							"// title 존재 여부 확인",
+							"pm.test(\"Title field exists\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"title\");",
+							"});",
+							"",
+							"// 응답 시간 체크",
+							"pm.test(\"Response time < 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/movie/{{movie_id}}?api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movie",
+						"{{movie_id}}"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{api_key}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.themoviedb.org/3"
+		},
+		{
+			"key": "api_key",
+			"value": ""
+		},
+		{
+			"key": "movie_id",
+			"value": ""
+		}
+	]
+}
